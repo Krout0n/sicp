@@ -88,22 +88,9 @@
 
 ;ex3-4
 (define (make-account balance password)
-    
-    (define (withdraw amount)
-        (if (>= balance amount)
-            (begin
-                (set! balance (- balance amount))
-                balance)
-                    "Insufficient funds")
-    )
-    
-    (define (deposit amount)
-        (set! balance (+ balance amount))
-        balance)
-    
-    (define (dispatch p m)
-        (let
-            ((counter 0))
+    (let
+        ((counter 0))
+        (define (dispatch p m)
             (if (eq? p password)
                 (cond
                     ((eq? m 'withdraw) withdraw)
@@ -116,19 +103,60 @@
                     (set! counter (+ counter 1))
                     (display "counter: ")
                     (display counter)
-                    ; (error "Incorrenct password")
+                    (newline)
                     (if (> counter 7)
-                        (display ("call-the-pop"))
-                        ; (error "Incorrenct password")
-                        (display ("you sent wrong password"))
+                        (begin
+                            (display "call-the-pop")
+                            (newline)
+                        )
+                        (begin
+                            (display "you sent wrong password")
+                            (newline)
+                        )
                     )
+                    (error "Incorrenct password")
                 )
             )
-            dispatch
         )
+        (define (withdraw amount)
+            (if (>= balance amount)
+                (begin
+                    (set! balance (- balance amount))
+                    balance)
+                        "Insufficient funds")
+        )
+        dispatch
     )
 )
 
-(define secure-acc (make-account 100 'pass))
-((secure-acc 'pass 'withdraw) 100)
-((secure-acc 'incorrect 'withdraw) 100)
+; gosh> (define secure-acc (make-account 100 'pass))
+; secure-acc
+; gosh> ((secure-acc 'pass 'withdraw) 100)
+; 0
+; gosh> ((secure-acc 'incorrect 'withdraw) 100)
+; counter: 1
+; you sent wrong password
+; *** ERROR: Incorrenct password
+; Stack Trace:
+; _______________________________________
+;   0  (secure-acc 'incorrect 'withdraw)
+;         at "(standard input)":213
+;   1  (eval expr env)
+;         at "/usr/local/Cellar/gauche/0.9.5/share/gauche-0.9/0.9.5/lib/gauche/interactive.scm":282
+; gosh> ((secure-acc 'incorrect 'withdraw) 100)
+; counter: 2
+; you sent wrong password
+; *** ERROR: Incorrenct password
+; ...
+; ...
+; ...
+; gosh> ((secure-acc 'incorrect 'withdraw) 100)
+; counter: 8
+; call-the-pop
+; *** ERROR: Incorrenct password
+; Stack Trace:
+; _______________________________________
+;   0  (secure-acc 'incorrect 'withdraw)
+;         at "(standard input)":213
+;   1  (eval expr env)
+;         at "/usr/local/Cellar/gauche/0.9.5/share/gauche-0.9/0.9.5/lib/gauche/interactive.scm":282
