@@ -125,6 +125,9 @@
                     balance)
                         "Insufficient funds")
         )
+        (define (deposit amount)
+            (set! balance (+ balance amount))
+            balance)
         dispatch
     )
 )
