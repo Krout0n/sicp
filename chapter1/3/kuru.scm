@@ -1,0 +1,13 @@
+(define (simpthon f a b n)
+    (define h (/ (- b a) n))
+    (define (simpthon-iter k product)
+      (define y (f (+ a (* h k))))
+      (if (= n k) (+ y product)
+        (cond ((= k 0) (simpthon-iter (+ k 1) (+ product y)))
+              ((= (modulo k 2) 1) (simpthon-iter (+ k 1) (+ product (* 2 y))))
+              (else (simpthon-iter (+ k 1) (+ product (* 4 y)))))))
+    (+ (/ h 3)(simpthon-iter 0 0)))
+
+(define (cube x) (* x x x))
+(print (simpthon cube 0 1 100))
+(print (/ (- 1 0) 100))
