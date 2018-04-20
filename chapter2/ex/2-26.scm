@@ -1,0 +1,5 @@
+(define (length items)
+    (define (length-iter a count)
+        (if (null? a) count)
+            (length-iter (cdr a) (+ count 1)))
+    (length-iter items 0))
