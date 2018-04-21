@@ -1,5 +1,7 @@
-(define (length items)
-    (define (length-iter a count)
-        (if (null? a) count)
-            (length-iter (cdr a) (+ count 1)))
-    (length-iter items 0))
+(define x (list 1 2 3))
+(define y (list 4 5 6))
+
+(append x y) ; (1 2 3 4 5 6)
+(cons x t) ; ((1 2 3) 4 5 6)
+(list x y) ; ((1 2 3) (4 5 6))
+
