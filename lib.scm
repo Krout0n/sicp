@@ -31,3 +31,6 @@
   (if (< high low) (list)
     (cons low (enumerate-intervals (+ 1 low) high))))
 
+(define (flatmap proc seq)
+  (accumulate append (list) (map proc seq)))
+
