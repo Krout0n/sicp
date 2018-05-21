@@ -20,8 +20,8 @@
           (begin
             (set! counter (+ counter 1))
             (if (< counter 7)
-              (lambda (x) (print "invalid-pw, you missed: " counter))
-              (lambda (x) (call-the-cops))))))
+              (lambda (_) (print "invalid-pw, you missed: " counter))
+              (lambda (_) (call-the-cops))))))
       dispatch))
 
 (define W1 (make-account 1000 'password))
