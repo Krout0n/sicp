@@ -1,0 +1,60 @@
+P1を分解して考える
+a -> xを読む
+b -> xを読む
+c -> a * bとする
+d -> (set! x c)
+
+同様にP2
+x -> xを読む
+y -> x+1
+z -> (set! x y)
+
+とする
+
+abcdxyz
+abcxdyz
+abcxydz
+abcxyzd
+abxcdyz
+abxcydz
+abxcyzd
+abxycdz
+abxyczd
+abxyzcd
+axbcdyz
+axbcydz
+axbcyzd
+axbycdz
+axbyczd
+axbyzcd
+axybcdz
+axybczd
+axybzcd
+axyzbcd
+xabcdyz
+xabcydz
+xabcyzd
+xabycdz
+xabyczd
+xabyzcd
+xaybcdz
+xaybczd
+xaybzcd
+xayzbcd
+xyabcdz
+xyabczd
+xyabzcd
+xyazbcd
+xyzabcd
+
+全パターンは上の通りとなる
+
+sによって abc と xyzが直列化させられるので
+abcが連続 && xyzが連続となる行について考えると
+
+abcdxyz -> 101
+abcxyzd -> 100
+xyzabcd -> 121
+
+となるので答えは
+100, 101, 121である．
