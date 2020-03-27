@@ -1,0 +1,28 @@
+(define (make-account balance correct-password)
+    (define how-many-incorrect 0)
+    (define call-the-cops "ピーポーピーポー")
+    (define (withdraw amount)
+        (if (>= balance amount)
+            (begin
+                (set! balance (- balance amount))
+                balance)
+            "Insufficient funds"))
+    (define (deposit amount)
+        (set! balance (+ balance amount))
+        balance)
+    (define (dispatch input-password m)
+        (if (eq? input-password correct-password)
+            (cond
+                ((eq? m 'withdraw) withdraw)
+                ((eq? m 'deposit) deposit)
+                ((eq? m 'confirm) balance)
+                (else (error "Unknown request: MAKE-ACCONT:" m)))
+            (begin
+                (set! how-many-incorrect (+ how-many-incorrect 1))
+                (lambda (_)
+                    (if (< how-many-incorrect 7)
+                        "Incorrect password"
+                        call-the-cops)))))
+    dispatch)
+(define mine (make-account 100 'a))
+((mine 'b 'withdraw) 100000)
