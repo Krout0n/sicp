@@ -1,14 +1,20 @@
-; 口座オブジェクトが別れて具合ヨシ！！
-
-(define (make-withdraw balance)
-    (lambda (amount)
+(define (make-account balance)
+    (define (withdraw amount)
         (if (>= balance amount)
             (begin
                 (set! balance (- balance amount))
                 balance)
-            "Insufficient funds")))
+            "Insufficient funds"))
+    (define (deposit amount)
+        (set! balance (+ balance amount))
+        balance)
+    (define (dispatch m)
+        (cond
+            ((eq? m 'withdraw) withdraw)
+            ((eq? m 'deposit) deposit)
+            ((eq? m 'confirm) balance)
+            (else (error "Unknown request: MAKE-ACCONT:" m))))
+    dispatch)
 
-(define mine (make-withdraw 100))
-(define yours (make-withdraw 100))
-(mine 25) ; 75
-(yours 10) ; 90
+(define mine (make-account 100))
+(define yours (make-account 114))
