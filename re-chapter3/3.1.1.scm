@@ -1,15 +1,14 @@
-; これじゃ口座みんな一緒だしwithdrawがグローバルに依存していて気持ち悪い
+; 口座オブジェクトが別れて具合ヨシ！！
 
-(define new-withdraw
-    (let ((balance 100))
-        (lambda (amount)
-            (if (>= balance amount)
-                (begin
-                    (set! balance (- balance amount))
-                    balance)
-                "Insufficient funds"))))
+(define (make-withdraw balance)
+    (lambda (amount)
+        (if (>= balance amount)
+            (begin
+                (set! balance (- balance amount))
+                balance)
+            "Insufficient funds")))
 
-(define mine new-withdraw)
-(define yours new-withdraw)
+(define mine (make-withdraw 100))
+(define yours (make-withdraw 100))
 (mine 25) ; 75
-(yours 10) ; 65
+(yours 10) ; 90
