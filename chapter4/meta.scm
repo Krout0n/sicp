@@ -173,3 +173,44 @@
                     (sequence->exp (cond-actions first))
                     (expand-clauses rest))))))
 
+(define (make-procedure parameters body env)
+    (list 'procedure parameters body env))
+(define (compound-procedure? p) (tagged-lambda p 'procedure))
+(define (procedure-parameters p) (cadr p))
+(define (procedure-body p) (caddr p))
+(define (procedure-environment p) (cadddr p))
+
+; 環境に対する演算
+; 
+; (define (lookup-variable-value var env))
+; (define (extend-environment <variables> <values> <base-env>))
+; (define (define-variable! <var> <value> <env>))
+; (define (set-variables-value! <var> <value> <env>))
+
+(define (enclosing-environment env) (cdr env))
+(define (first-frame env) (car env))
+(define the-empty-environment '())
+
+(define (make-frame variables values)
+    (cons variables values))
+(define (frame-variables frame) (car frame))
+(define (frame-values frame) (cdr frame))
+(define (add-binding-to-frame! var val frame)
+    (set-car! frame (cons var (car frame)))
+    (set-cdr! frame (cons val (cdr frame))))
+
+(define (lookup-variable-value var env)
+    (define (env-loop env)
+        (define (scan vars vals)
+            (cond
+                ((null? vars) (env-loop (enclosing-environment env)))
+                ((eq? var (car vars)) (car vals))
+                (else (scan (cdr vars) (cdr vals)))))
+        (if (eq? env the-empty-environment)
+            (error "Unbound variable" var)
+            (let
+                ((frame (first-frame env)))
+                (scan
+                    (frame-variables frame)
+                    (frame-values frame)))))
+    (env-loop env))
